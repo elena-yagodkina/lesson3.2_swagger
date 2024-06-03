@@ -26,39 +26,30 @@ public class StudentController {
     @GetMapping("{studentId}")
     public ResponseEntity<Student> getStudent(@PathVariable Long studentId) {
         Student student = studentService.getStudentById(studentId);
-        if(student == null) {
-            return ResponseEntity.notFound() .build();
+        if (student == null) {
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(student);
     }
 
     @PutMapping()
     public ResponseEntity<Student> updateUser(@RequestBody Student student) {
-        Student updatedStudent = studentService.updateStudent(student.getId(), student);
-        if(updatedStudent == null) {
-            return ResponseEntity.notFound() .build();
+        Student updatedStudent = studentService.updateStudent(student);
+        if (updatedStudent == null) {
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updatedStudent);
     }
 
     @DeleteMapping("{studentId}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long studentId) {
-        Student student = studentService.deleteStudent(studentId);
-        if(student == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(student);
+    public ResponseEntity deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
     public ResponseEntity<Collection<Student>> getAll() {
         Collection<Student> students = studentService.getAll();
-        return ResponseEntity.ok(students);
-    }
-
-    @GetMapping("getByAge/{age}")
-    public ResponseEntity<Collection<Student>> getByAge(@PathVariable int age) {
-        Collection<Student> students = studentService.getByAge(age);
         return ResponseEntity.ok(students);
     }
 }
