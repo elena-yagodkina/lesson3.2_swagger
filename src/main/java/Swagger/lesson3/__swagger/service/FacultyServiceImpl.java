@@ -1,10 +1,12 @@
 package Swagger.lesson3.__swagger.service;
 
+import Swagger.lesson3.__swagger.exception.FacultyNotFoundException;
 import Swagger.lesson3.__swagger.model.Faculty;
 import Swagger.lesson3.__swagger.repositories.FacultyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -21,7 +23,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty getFacultyById(long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElseThrow(() -> new FacultyNotFoundException(id));
     }
 
     @Override
