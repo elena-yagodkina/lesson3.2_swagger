@@ -1,50 +1,43 @@
 package Swagger.lesson3.__swagger.service;
 
+import Swagger.lesson3.__swagger.exception.FacultyNotFoundException;
 import Swagger.lesson3.__swagger.model.Faculty;
+import Swagger.lesson3.__swagger.repositories.FacultyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
-    private Map<Long, Faculty> faculties = new HashMap<>();
-    private long generatedFacultyId = 0;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     @Override
     public Faculty createFaculty(Faculty faculty) {
-        faculties.put(generatedFacultyId, faculty);
-        generatedFacultyId++;
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     @Override
-    public Faculty getFacultyById(Long facultyId) {
-        return faculties.get(facultyId);
+    public Faculty getFacultyById(long id) {
+        return facultyRepository.findById(id).orElseThrow(() -> new FacultyNotFoundException(id));
     }
 
     @Override
-    public Faculty updateFaculty(Long facultyId, Faculty faculty) {
-        faculties.put(generatedFacultyId, faculty);
-        return faculty;
+    public Faculty updateFaculty(Faculty faculty) {
+        return facultyRepository.save(faculty);
     }
 
     @Override
-    public Faculty deleteFaculty(Long facultyId) {
-        return faculties.remove(facultyId);
-    }
-
-    @Override
-    public Collection<Faculty> getByColor(String color) {
-
-        return faculties.values().stream().filter(s -> s.getColor().equals(color)).toList();
+    public void deleteFaculty(long id) {
+        facultyRepository.deleteById(id);
     }
 
     @Override
     public Collection<Faculty> getAll() {
-
-        return Collections.unmodifiableCollection(faculties.values());
+        return facultyRepository.findAll();
     }
 }
