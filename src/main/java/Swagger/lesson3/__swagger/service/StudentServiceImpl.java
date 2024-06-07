@@ -6,6 +6,7 @@ import Swagger.lesson3.__swagger.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -46,7 +47,7 @@ public class StudentServiceImpl implements StudentService {
     public Collection<Student> getByAgeBetween(int min, int max) {
         Collection<Student> students = studentRepository.findByAgeBetween(min, max);
         if (students.isEmpty()) {
-            throw new StudentNotFoundException("Студенты с указанным возрастом не найдены");
+            return Collections.emptyList();
         }
         return students;
     }

@@ -1,5 +1,5 @@
 select * from students where age between 10 and 13;
 select name from students;
-select * from students where name ~* 'м';
+select * from students where name like '%м%';
 select * from students where age < id;
 select * from students order by age;
