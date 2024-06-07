@@ -1,18 +1,20 @@
 package Swagger.lesson3.__swagger.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
+@Table(name = "faculties")
 public class Faculty {
     @Id
     @GeneratedValue
     private Long id;
     private String name;
     private String color;
+
     public Faculty(Long id, String name, String color) {
         this.id = id;
         this.name = name;

@@ -1,10 +1,12 @@
 package Swagger.lesson3.__swagger.service;
 
+import Swagger.lesson3.__swagger.exception.StudentNotFoundException;
 import Swagger.lesson3.__swagger.model.Student;
 import Swagger.lesson3.__swagger.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -38,5 +40,24 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Collection<Student> getAll() {
         return studentRepository.findAll();
+    }
+
+    @Override
+    public Collection<Student> getByAgeBetween(int min, int max) {
+        Collection<Student> students = studentRepository.findByAgeBetween(min, max);
+        if (students.isEmpty()) {
+            throw new StudentNotFoundException("Студенты с указанным возрастом не найдены");
+        }
+        return students;
+    }
+
+    @Override
+    public Student get(Long id) {
+
+        Optional<Student> student = studentRepository.findById(id);
+        if (student.isPresent()) {
+            return student.get();
+        }
+        throw new StudentNotFoundException(String.valueOf(id));
     }
 }

@@ -14,4 +14,8 @@ public interface StudentService {
     void deleteStudent(long id);
 
     Collection<Student> getAll();
+
+    Collection<Student> getByAgeBetween(int min, int max);
+
+    Student get(Long id);
 }

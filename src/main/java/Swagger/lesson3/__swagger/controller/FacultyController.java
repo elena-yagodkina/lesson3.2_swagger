@@ -1,11 +1,13 @@
 package Swagger.lesson3.__swagger.controller;
 
 import Swagger.lesson3.__swagger.model.Faculty;
+import Swagger.lesson3.__swagger.model.Student;
 import Swagger.lesson3.__swagger.service.FacultyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @RequestMapping("/faculty")
 @RestController
@@ -47,8 +49,16 @@ public class FacultyController {
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> getAll() {
-        Collection<Faculty> faculties = facultyService.getAll();
-        return ResponseEntity.ok(faculties);
+    public ResponseEntity <Collection<Faculty>> getAll(@RequestParam(required = false) String name, @RequestParam(required = false) String color) {
+        if(name != null && !name.isBlank() || color != null && !color.isBlank()) {
+            return ResponseEntity.ok(Collections.singleton(facultyService.findFacultyByNameOrColor(name, color)));
+        }
+        return ResponseEntity.ok(facultyService.getAll());
+    }
+
+    @GetMapping("/{id}/students")
+    public ResponseEntity<Collection<Student>> getStudentsByFaculty(@PathVariable Long id) {
+        Collection<Student> students = facultyService.getStudentsByFaculty(id);
+        return ResponseEntity.ok(students);
     }
 }
