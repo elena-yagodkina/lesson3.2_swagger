@@ -6,7 +6,6 @@ import Swagger.lesson3.__swagger.service.FacultyService;
 import Swagger.lesson3.__swagger.service.StudentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collection;
 
 @RequestMapping("/student")
