@@ -8,13 +8,19 @@ import java.util.Objects;
 @Entity
 public class Avatar {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
     private String filePath;
     private long fileSize;
     private String mediaType;
     @Lob
     private byte[] data;
+
+    @OneToOne
+    private Student student;
+
+    @Lob
+    private byte[] preview;
 
     public Avatar(Long id, String filePath, long fileSize, String mediaType, byte[] data, byte[] preview, Student student) {
         this.id = id;
@@ -33,11 +39,6 @@ public class Avatar {
     public void setPreview(byte[] preview) {
         this.preview = preview;
     }
-
-    @Lob
-    private byte[] preview;
-    @OneToOne
-    private Student student;
 
     public Avatar() {
     }
