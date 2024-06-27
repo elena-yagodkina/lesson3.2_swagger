@@ -4,6 +4,7 @@ import Swagger.lesson3.__swagger.model.Faculty;
 import Swagger.lesson3.__swagger.model.Student;
 import Swagger.lesson3.__swagger.repositories.StudentRepository;
 import Swagger.lesson3.__swagger.service.AvatarService;
+import Swagger.lesson3.__swagger.service.FacultyService;
 import Swagger.lesson3.__swagger.service.StudentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,9 @@ public class StudentControllerWebMvcTest {
 
     @MockBean
     private StudentService studentService;
+
+    @MockBean
+    private FacultyService facultyService;
 
     @MockBean
     private AvatarService avatarService;
