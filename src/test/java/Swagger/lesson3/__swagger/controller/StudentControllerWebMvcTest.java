@@ -125,7 +125,7 @@ public class StudentControllerWebMvcTest {
         when(studentService.getByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(students);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student")
+                        .get("/student/getByAgeBetween?minAge=12&maxAge=15")
                         .param("minAge", String.valueOf(minAge))
                         .param("maxAge", String.valueOf(maxAge))
                         .accept(MediaType.APPLICATION_JSON))
