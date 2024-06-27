@@ -3,6 +3,7 @@ package Swagger.lesson3.__swagger.model;
 import jakarta.persistence.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -73,5 +74,8 @@ public class Faculty {
                 ", name='" + name + '\'' +
                 ", color='" + color + '\'' +
                 '}';
+    }
+
+    public void setStudents(List<Student> students) {
     }
 }

@@ -5,6 +5,7 @@ import Swagger.lesson3.__swagger.model.Student;
 import Swagger.lesson3.__swagger.repositories.StudentRepository;
 import Swagger.lesson3.__swagger.service.AvatarService;
 import Swagger.lesson3.__swagger.service.StudentService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,6 @@ public class StudentControllerWebMvcTest {
     public void getStudentByIdTest() throws Exception {
         Student expected = new Student(1L, "Иван Иванов", 14);
         when(studentService.getStudentById(1L)).thenReturn(new Student(1L, "Иван Иванов", 14));
-
         mockMvc.perform(MockMvcRequestBuilders.get("/student/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -62,7 +62,7 @@ public class StudentControllerWebMvcTest {
         when(studentService.createStudent(new Student(1L,"Андрей Федоров", 14))).thenReturn(new Student(1L,"Андрей Федоров", 14));
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/student")
-                        .content(String.valueOf(new Student(1L,"Андрей Федоров", 14)))
+                        .content(new ObjectMapper().writeValueAsString(new Student(1L,"Андрей Федоров", 14)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -78,7 +78,7 @@ public class StudentControllerWebMvcTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/student")
-                        .content(String.valueOf(new Student(1L,"Анна Борисова", 13)))
+                        .content(new ObjectMapper().writeValueAsString(new Student(1L,"Анна Борисова", 13)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

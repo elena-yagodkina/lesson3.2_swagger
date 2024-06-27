@@ -5,8 +5,8 @@ import Swagger.lesson3.__swagger.model.Student;
 import Swagger.lesson3.__swagger.repositories.StudentRepository;
 import Swagger.lesson3.__swagger.service.AvatarService;
 import Swagger.lesson3.__swagger.service.FacultyService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -36,9 +37,6 @@ public class FacultyControllerWebMvcTest {
     @MockBean
     private StudentRepository studentRepository;
 
-    @InjectMocks
-    private FacultyController facultyController;
-
     @Test
     public void getFacultyByIdTest() throws Exception {
         Faculty expected = new Faculty(1L, "Химия", "Белый");
@@ -60,7 +58,7 @@ public class FacultyControllerWebMvcTest {
         when(facultyService.createFaculty(new Faculty(1L,"Математика", "Серый"))).thenReturn(new Faculty(1L,"Математика", "Серый"));
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/faculty")
-                        .content(String.valueOf(new Faculty(1L,"Математика", "Серый")))
+                        .content(new ObjectMapper().writeValueAsString(new Faculty(1L,"Математика", "Серый")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -76,7 +74,7 @@ public class FacultyControllerWebMvcTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/faculty")
-                        .content(String.valueOf(new Faculty(1L,"История", "Синий")))
+                        .content(new ObjectMapper().writeValueAsString(new Faculty(1L,"История", "Синий")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -108,24 +106,30 @@ public class FacultyControllerWebMvcTest {
 
     @Test
     void getStudentsByFacultyTest() throws Exception {
-        Faculty expected = new Faculty(1L, "История", "Синий");
-        List<Student> studentsList = List.of(
-                new Student("Сергей Иванов", 11),
-                new Student("Роман Григорьев", 12),
-                new Student("Ольга Сергеева", 13),
-                new Student("Андрей Смирнов", 14),
-                new Student("Ксения Захарова", 15));
-        List<Student> studentList = studentsList.stream().filter(s -> s.getFaculty().getId().equals(expected.getId())).toList();
+        Student student1 = new Student(1L, "Анна Борисова", 13);
+        Student student2 = new Student(2L, "Виктор Сергеев", 12);
+        Faculty faculty = new Faculty(1L, "История", "Синий");
 
-        when(studentRepository.findByFaculty_Id(2L)).thenReturn(studentList);
+        List<Student> students = new ArrayList<>();
+        students.add(student1);
+        students.add(student2);
+
+        student1.setFaculty(faculty);
+        student2.setFaculty(faculty);
+
+        when(studentRepository.findByFaculty_Id(1L)).thenReturn(students);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty" + "/2/students")
+                        .get("/faculty" + "/1/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value(studentsList.get(0)))
-                .andExpect(jsonPath("$[1]").value(studentsList.get(1)));
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].name").value("Анна Борисова"))
+                .andExpect(jsonPath("$[0].age").value(13))
+                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].name").value("Виктор Сергеев"))
+                .andExpect(jsonPath("$[1].age").value(12));
     }
 }
