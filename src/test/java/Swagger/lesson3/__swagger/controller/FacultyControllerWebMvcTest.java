@@ -117,7 +117,7 @@ public class FacultyControllerWebMvcTest {
         student1.setFaculty(faculty);
         student2.setFaculty(faculty);
 
-        when(studentRepository.findByFaculty_Id(1L)).thenReturn(students);
+        when(facultyService.getStudentsByFaculty(1L)).thenReturn(students);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/faculty" + "/1/students")
