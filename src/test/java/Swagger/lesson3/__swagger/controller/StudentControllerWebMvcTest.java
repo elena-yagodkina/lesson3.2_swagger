@@ -40,12 +40,6 @@ public class StudentControllerWebMvcTest {
     @MockBean
     private AvatarService avatarService;
 
-    @MockBean
-    private StudentRepository studentRepository;
-
-    @InjectMocks
-    private StudentController studentController;
-
     @Test
     public void getStudentByIdTest() throws Exception {
         Student expected = new Student(1L, "Иван Иванов", 14);
@@ -140,15 +134,15 @@ public class StudentControllerWebMvcTest {
         Faculty faculty = new Faculty(1L, "История", "Синий");
 
         student.setFaculty(faculty);
-        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+        when(studentService.get(1L)).thenReturn(student);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("http://localhost/student/1/faculty")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(faculty.getId()))
-                .andExpect(jsonPath("$.name").value(faculty.getName()))
-                .andExpect(jsonPath("$.color").value(faculty.getColor()));
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("История"))
+                .andExpect(jsonPath("$.color").value("Синий"));
     }
 }
