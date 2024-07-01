@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,5 +61,20 @@ public class StudentServiceImpl implements StudentService {
             return student.get();
         }
         throw new StudentNotFoundException(String.valueOf(id));
+    }
+
+    @Override
+    public Integer getAmountOfStudents() {
+        return studentRepository.getAmountOfStudents();
+    }
+
+    @Override
+    public Double getAverageAge() {
+        return studentRepository.getAverageAge();
+    }
+
+    @Override
+    public List<Student> getFiveLastStudents() {
+        return studentRepository.getFiveLastStudents();
     }
 }

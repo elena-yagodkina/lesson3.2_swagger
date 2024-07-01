@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 
 @RequestMapping("/avatar")
 @RestController
@@ -25,35 +26,40 @@ public class AvatarController {
         this.avatarService = avatarService;
     }
 
-    @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar) throws IOException {
-        avatarService.uploadAvatar(id, avatar);
+    @PostMapping(value = "/{studentId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
+        avatarService.uploadAvatar(studentId, avatar);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/{id}/avatar/preview")
-    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
-        Avatar avatar = avatarService.findAvatar(id);
+    @GetMapping("/{studentId}/avatar/preview")
+    public ResponseEntity<byte[]> getPreview(@PathVariable Long studentId) {
+        Avatar avatar = avatarService.findAvatar(studentId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
         headers.setContentLength(avatar.getPreview().length);
 
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getPreview());
     }
 
-    @GetMapping(value = "/{id}/avatar")
-    public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
-        Avatar avatar = avatarService.findAvatar(id);
+    @GetMapping("/{studentId}/avatar")
+    public void getAvatar(@PathVariable Long studentId, HttpServletResponse response) throws IOException {
+        Avatar avatar = avatarService.findAvatar(studentId);
 
         Path path = Path.of(avatar.getFilePath());
 
         try (InputStream is = Files.newInputStream(path);
-             OutputStream os = response.getOutputStream();) {
-            response.setStatus(200);
+             OutputStream os = response.getOutputStream()) {
             response.setContentType(avatar.getMediaType());
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<Collection<Avatar>> getAll(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize) {
+        Collection<Avatar> avatars = avatarService.getAll(pageNumber, pageSize);
+        return ResponseEntity.ok(avatars);
     }
 }
