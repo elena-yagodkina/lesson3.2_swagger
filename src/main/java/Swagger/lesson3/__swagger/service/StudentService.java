@@ -3,6 +3,7 @@ package Swagger.lesson3.__swagger.service;
 import Swagger.lesson3.__swagger.model.Student;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface StudentService {
     Student createStudent(Student student);
@@ -18,4 +19,10 @@ public interface StudentService {
     Collection<Student> getByAgeBetween(int min, int max);
 
     Student get(Long id);
+
+    Integer getAmountOfStudents();
+
+    Double getAverageAge();
+
+    List<Student> getFiveLastStudents();
 }
