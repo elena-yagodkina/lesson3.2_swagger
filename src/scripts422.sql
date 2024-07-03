@@ -2,12 +2,12 @@ CREATE TABLE cars (
 car_make TEXT NOT NULL,
 car_model TEXT NOT NULL,
 price INTEGER NOT NULL,
-id SERIAL
+id SERIAL PRIMARY KEY
 );
 
 CREATE TABLE drivers (
 name TEXT NOT NULL,
 age INTEGER CHECK (age > 18) NOT NULL,
 car_license BOOLEAN,
-id_car SERIAL REFERENCES cars(id) NOT NULL
+id_car INTEGER REFERENCES cars(id) NOT NULL
 );
