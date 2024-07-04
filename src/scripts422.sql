@@ -6,6 +6,7 @@ id SERIAL PRIMARY KEY
 );
 
 CREATE TABLE drivers (
+id SERIAL PRIMARY KEY,
 name TEXT NOT NULL,
 age INTEGER CHECK (age > 18) NOT NULL,
 car_license BOOLEAN,
