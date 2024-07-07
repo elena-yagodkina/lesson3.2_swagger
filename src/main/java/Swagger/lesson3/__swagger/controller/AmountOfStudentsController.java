@@ -27,7 +27,7 @@ public class AmountOfStudentsController {
     }
 
     @GetMapping("/five-last-students")
-    public List<Student> getFiveLastStudents() {
-        return studentService.getFiveLastStudents();
+    public List<Student> getFiveLastStudents(Integer amount) {
+        return studentService.getFiveLastStudents(amount);
     }
 }

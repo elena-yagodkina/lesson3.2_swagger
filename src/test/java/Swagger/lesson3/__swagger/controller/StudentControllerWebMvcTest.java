@@ -134,7 +134,7 @@ public class StudentControllerWebMvcTest {
         Faculty faculty = new Faculty(1L, "История", "Синий");
 
         student.setFaculty(faculty);
-        when(studentService.get(1L)).thenReturn(student);
+        when(studentService.getStudentById(1L)).thenReturn(student);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("http://localhost/student/1/faculty")
