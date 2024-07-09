@@ -7,6 +7,7 @@ import Swagger.lesson3.__swagger.service.StudentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
+import java.util.List;
 
 @RequestMapping("/student")
 @RestController
@@ -63,7 +64,19 @@ public class StudentController {
 
     @GetMapping("/{id}/faculty")
     public ResponseEntity<Faculty> getFacultyOfStudent(@PathVariable Long id) {
-        Faculty faculty = studentService.get(id).getFaculty();
+        Faculty faculty = studentService.getStudentById(id).getFaculty();
         return ResponseEntity.ok(faculty);
+    }
+
+    @GetMapping("/last")
+    public ResponseEntity<List<Student>> getLastFive(@RequestParam(defaultValue="5") Integer amount) {
+        List<Student> students = studentService.getFiveLastStudents(amount);
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/amount")
+    public ResponseEntity<Integer> getAmountStudent() {
+        Integer amount = studentService.getAmountOfStudents();
+        return ResponseEntity.ok(amount);
     }
 }

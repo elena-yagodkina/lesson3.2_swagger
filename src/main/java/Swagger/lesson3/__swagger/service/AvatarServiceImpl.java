@@ -6,6 +6,8 @@ import Swagger.lesson3.__swagger.repositories.AvatarRepository;
 import Swagger.lesson3.__swagger.repositories.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -36,8 +38,11 @@ public class AvatarServiceImpl implements AvatarService {
         this.avatarRepository = avatarRepository;
     }
 
+    Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
+
     @Override
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.info("Was invoked method for upload avatar");
         Student student = studentRepository.getById(studentId);
         Path filePath = Path.of(avatarPic, student + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -80,6 +85,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar findAvatar(Long studentId) {
+        logger.info("Was invoked method for find avatar");
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
@@ -90,6 +96,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Collection<Avatar> getAll(Integer pageNumber, Integer pageSize) {
+        logger.info("Was invoked method for getting all avatars");
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
