@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 @RequestMapping("/faculty")
 @RestController
@@ -61,4 +62,11 @@ public class FacultyController {
         Collection<Student> students = facultyService.getStudentsByFaculty(id);
         return ResponseEntity.ok(students);
     }
+
+    @GetMapping("/longest-names")
+    public ResponseEntity<Optional<String>> getLongestFacultyName(){
+        Optional<String> longestFacultyName = facultyService.getLongestFacultyName();
+        return ResponseEntity.ok(longestFacultyName);
+    }
+
 }

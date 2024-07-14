@@ -23,4 +23,8 @@ public interface StudentService {
     Double getAverageAge();
 
     List<Student> getFiveLastStudents(Integer amount);
+
+    List<String> getStudentStartWithLetter();
+
+    Double getAvgStudentAge();
 }

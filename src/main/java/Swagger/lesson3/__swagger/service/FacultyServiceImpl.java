@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Optional;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -63,5 +65,13 @@ public class FacultyServiceImpl implements FacultyService {
     public Collection<Student> getStudentsByFaculty(Long facultyId) {
         logger.info("Was invoked method for getting students by facultyId");
         return studentRepository.findByFaculty_Id(facultyId);
+    }
+
+    @Override
+    public Optional<String> getLongestFacultyName() {
+        return facultyRepository.findAll()
+                .stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length));
     }
 }

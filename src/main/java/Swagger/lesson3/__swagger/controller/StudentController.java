@@ -1,5 +1,6 @@
 package Swagger.lesson3.__swagger.controller;
 
+import Swagger.lesson3.__swagger.exception.StudentNotFoundException;
 import Swagger.lesson3.__swagger.model.Faculty;
 import Swagger.lesson3.__swagger.model.Student;
 import Swagger.lesson3.__swagger.service.FacultyService;
@@ -78,5 +79,13 @@ public class StudentController {
     public ResponseEntity<Integer> getAmountStudent() {
         Integer amount = studentService.getAmountOfStudents();
         return ResponseEntity.ok(amount);
+    }
+
+    @GetMapping("/names-starting-with/{letter}")
+    public List<String> getStudentsNamesStartingWith(@PathVariable String letter) {
+        if(letter.length() > 1){
+           throw new StudentNotFoundException(letter);
+        }
+        return studentService.getStudentStartWithLetter();
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @RestController
 public class AmountOfStudentsController {
@@ -29,5 +31,11 @@ public class AmountOfStudentsController {
     @GetMapping("/five-last-students")
     public List<Student> getFiveLastStudents(Integer amount) {
         return studentService.getFiveLastStudents(amount);
+    }
+
+    @GetMapping(" /calculate")
+    public Integer calculateSum() {
+        return IntStream.range(1, 1_000_000)
+                .reduce(0, Integer::sum);
     }
 }

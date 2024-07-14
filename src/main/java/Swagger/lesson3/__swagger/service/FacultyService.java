@@ -4,6 +4,7 @@ import Swagger.lesson3.__swagger.model.Faculty;
 import Swagger.lesson3.__swagger.model.Student;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface FacultyService {
 
@@ -20,4 +21,6 @@ public interface FacultyService {
     Faculty findFacultyByNameOrColor(String name, String color);
 
     Collection<Student> getStudentsByFaculty(Long facultyId);
+
+    Optional<String> getLongestFacultyName();
 }
