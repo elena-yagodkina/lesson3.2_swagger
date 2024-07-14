@@ -85,4 +85,24 @@ public class StudentServiceImpl implements StudentService {
         logger.info("Was invoked method for getting five last of students");
         return studentRepository.getFiveLastStudents();
     }
+
+    @Override
+    public List<String> getStudentStartWithLetter() {
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(n -> n.startsWith("Р"))
+                .sorted(String::compareTo)
+                .toList();
+    }
+
+    @Override
+    public Double getAvgStudentAge() {
+        return studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+    }
 }
