@@ -88,4 +88,20 @@ public class StudentController {
         }
         return studentService.getStudentStartWithLetter();
     }
+
+    /*@GetMapping("/print-parallel")
+    public ResponseEntity<List<Student>> printStudentsNamesParallel() {
+        List<Student> students = studentService.printStudentsNames();
+        return ResponseEntity.ok(students);
+    }*/
+
+    @GetMapping("/print-parallel")
+    public void printStudentsNamesParallel() {
+        studentService.printStudentsNames();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printStudentsNamesSync() {
+        studentService.printStudentsNamesSync();
+    }
 }
