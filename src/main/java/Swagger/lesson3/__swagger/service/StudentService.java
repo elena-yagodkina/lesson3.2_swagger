@@ -27,4 +27,8 @@ public interface StudentService {
     List<String> getStudentStartWithLetter();
 
     Double getAvgStudentAge();
+
+    List<Student> printStudentsNames();
+
+    List<Student> printStudentsNamesSync();
 }
